@@ -11,9 +11,9 @@ import com.example.retrofit.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class QuestionListFragment extends Fragment {
 
-    public MainActivityFragment() {
+    public QuestionListFragment() {
     }
 
     @Override
