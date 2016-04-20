@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="references">
+        <item>http://square.github.io/retrofit/</item>
+        <item>http://inthecheesefactory.com/blog/retrofit-2.0/en</item>
+        <item>https://guides.codepath.com/android/Consuming-APIs-with-Retrofit</item>
+        <item>http://www.iayon.com/consuming-rest-api-with-retrofit-2-0-in-android/</item>
+        <item>http://inthecheesefactory.com/blog/retrofit-2.0/en</item>
+    </array>
+</resources>
