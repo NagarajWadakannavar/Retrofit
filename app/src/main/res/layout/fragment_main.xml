@@ -3,13 +3,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.QuestionListFragment"
-    tools:showIn="@layout/activity_main">
+   >
+
+    <HorizontalScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp">
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Request" />
+
+            <RadioButton
+                android:id="@+id/dynamic_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DynamicURL" />
+
+            <RadioButton
+                android:id="@+id/url_manipulation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="URL Manipulation" />
+
+            <RadioButton
+                android:id="@+id/query_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Query param Map" />
+        </RadioGroup>
+    </HorizontalScrollView>
 
     <ListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/adapter_question_list_item"/>
+        android:layout_below="@id/scrollView"
+        tools:listitem="@layout/adapter_question_list_item" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
