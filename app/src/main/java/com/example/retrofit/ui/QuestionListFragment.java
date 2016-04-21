@@ -14,6 +14,7 @@ import com.example.retrofit.R;
 import com.example.retrofit.api.StackOverflowAPI;
 import com.example.retrofit.model.Questions;
 import com.example.retrofit.ui.adapter.ListAdapter;
+import com.example.retrofit.utils.ServiceGenerator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class QuestionListFragment extends Fragment implements RadioGroup.OnCheck
     private ProgressBar progressBar;
     private StackOverflowAPI api;
     private List<Questions.Question> questionList = new ArrayList<>();
+    private Call<Questions> questionsCall;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,8 +51,7 @@ public class QuestionListFragment extends Fragment implements RadioGroup.OnCheck
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("https://api.stackexchange.com").addConverterFactory(GsonConverterFactory.create()).build();
-        api = retrofit.create(StackOverflowAPI.class);
+        api = ServiceGenerator.createService(StackOverflowAPI.class);
         listView.setAdapter(new ListAdapter(getActivity(), questionList));
         RadioGroup radioGroup = (RadioGroup) getView().findViewById(R.id.radio_group);
         radioGroup.setOnCheckedChangeListener(this);
@@ -66,8 +67,12 @@ public class QuestionListFragment extends Fragment implements RadioGroup.OnCheck
             public void onResponse(Call<Questions> call, Response<Questions> response) {
                 if (getActivity() == null)
                     return;
-                questionList.addAll(response.body().items);
-                ((ListAdapter) listView.getAdapter()).notifyDataSetChanged();
+                if (response.isSuccessful()) {
+                    questionList.addAll(response.body().items);
+                    ((ListAdapter) listView.getAdapter()).notifyDataSetChanged();
+                } else {
+                    // error response, no access to resource?
+                }
                 progressBar.setVisibility(View.GONE);
 
             }
@@ -84,9 +89,8 @@ public class QuestionListFragment extends Fragment implements RadioGroup.OnCheck
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         questionList.clear();
-
         ((ListAdapter) listView.getAdapter()).notifyDataSetChanged();
-        Call<Questions> questionsCall = null;
+        cancelRequest();
         switch (group.getCheckedRadioButtonId()) {
             case R.id.request:
                 questionsCall = api.downloadQuestions();
@@ -106,6 +110,18 @@ public class QuestionListFragment extends Fragment implements RadioGroup.OnCheck
                 break;
         }
         downloadQuestions(questionsCall);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        cancelRequest();
+
+    }
+
+    private void cancelRequest() {
+        if (questionsCall != null)
+            questionsCall.cancel();
 
     }
 }
