@@ -1,5 +1,6 @@
 package com.example.retrofit.ui.adapter;
 
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.retrofit.R;
+import com.example.retrofit.databinding.FragmentReferenceListBinding;
 import com.example.retrofit.ui.ReferenceListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
@@ -33,18 +35,21 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.link.setText(values.get(position));
-
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    // listener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
+        holder.binder.setLink(values.get(position));
+        holder.binder.executePendingBindings();
+     //   holder.binder.setVariable(holder.binder.getRoot().getId(),values.get(position));
+//        holder.link.setText(values.get(position));
+//
+//        holder.view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (null != listener) {
+//                    // Notify the active callbacks interface (the activity, if the
+//                    // fragment is attached to one) that an item has been selected.
+//                    // listener.onListFragmentInteraction(holder.mItem);
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -54,12 +59,13 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View view;
-        public final TextView link;
+        public FragmentReferenceListBinding binder;
+
 
         public ViewHolder(View view) {
             super(view);
             this.view = view;
-            link = (TextView) view.findViewById(R.id.link);
+            binder = DataBindingUtil.bind(view);
         }
 
 
